@@ -1,4 +1,4 @@
-hacks-brick-xtag-article-2013
-=============================
+brick-and-x-tags-tutorial
+=========================
 
-Demo code to support Angelina's 2013 article on Brick and X-Tag at the Mozilla Hacks blog.
+Learning materials for Angelina's tutorial here on building web apps with Brick and X-Tag. Web components! Aww yiss.
