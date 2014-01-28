@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/brick.css"/>
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+    <title>Simple Brick Demo</title>
+  </head>
+  <body>
+    <x-appbar>
+      <header>Simple Brick App</header>
+      <button id="view-prev">Prev</button>
+      <button id="view-next">Next</button>
+    </x-appbar>
+    <x-deck id="views">
+      <x-card>
+        <h1>View 1</h1>
+        <p>Hello, world!</p>
+      </x-card>
+      <x-card>
+        <h1>Pick a Date</h1>
+        <p>&lt;x-calendar&gt; used here to show you another tag in action</p>
+        <x-calendar></x-calendar>
+      </x-card>
+      <x-card>
+        <h1>A Random Cat To Spice Things Up</h1>
+        <!-- Fetches from the Lorem Pixel placeholder content service -->
+        <img src="http://lorempixel.com/300/300/cats">
+      </x-card>
+    </x-deck>
+    <script type="text/javascript" src="js/brick.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
+</html>

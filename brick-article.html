@@ -1,0 +1,327 @@
+<h1>Custom Elements for Custom Applications - UI Components with Mozilla's Brick and X-Tag</h1>
+<p>In this article, we will explore the use of Mozilla's Brick and X-Tag libraries. First we'll use Brick to rapidly prototype a simple application. Then, we'll build a custom web component using X-Tag.</p>
+
+<h2>The Technology</h2>
+
+<h3>Brick: Curated Web Components</h3>
+
+<p><a href="http://mozilla.github.io/brick" alt="Mozilla's Brick Components">Brick</a> is a set of modular, reusable UI components. The components are designed for adaptive, responsive applications and are a great choice for going <a href="http://designshack.net/articles/css/mobilefirst/" alt="Mobile First article by Joshua Johnson">mobile first</a>, which is by and large how web-based applications should be developed. This philosophy and it's design patterns accomodate a wide range of devices.  Brick components aren't just for <em>mobile</em> apps, they are for <em>modern apps</em>. Brick is kind of like a library, but really you should think of it as <em>a curated collection of web components</em></p>
+
+<p>A Brick components can be affectionately referred to as just 'a brick' when we're talking about them. This will be used as a convention throughout the remainder of this article.</p>
+
+<p>Brick components are used declaritively in your HTML <code>&lt;like-this&gt;</code> and can be styled with CSS like regular non-custom elements. Bricks have their own micro-APIs for interacting with them. Brick is is not a framework: it should be thought of like a set of building blocks. Do you like Lego? Good. You will like Brick.</p>
+
+<p>Brick web components are made using the X-Tag custom elements polyfill.</p>
+
+<h2>What is X-Tag?</h2>
+
+<p>X-Tag is a library that polyfills several (and soon all) features that enable <a href="http://www.w3.org/TR/components-intro/" alt="W3C Intro to Web Components">web components</a> in the browser. In particular, X-Tag is focused on <a href="http://stackoverflow.com/questions/6599815/what-is-the-difference-between-a-shim-and-a-polyfill" alt="StackOverflow explains shims and polyfills">polyfilling</a> the creation of Custom Elements so that you can extend the DOM using your own declaritive syntax and element-specific API.</p>
+
+<p>When you are using components from Brick, you are using web components made using the X-Tag library. Brick includes X-Tag core, so if you include Brick and then decide to make your own custom elements - you do not need to include X-Tag to do so, all the features of X-Tag are already available for you.</p>
+
+<h2>Using Prexisting Bricks</h2>
+
+<p>Here we will build a simple skeleton app using <code>&lt;x-appbar&gt;</code>, <code>&lt;x-deck&gt;</code>, and <code>&lt;x-card&gt;</code>. <a href="http://mozilla.github.io/brick/docs.html#x-tag-appbar" alt="x-appbar documentation">x-appbar</a> provides a tidy header bar for our application, and x-cards placed as children of an <a href="http://mozilla.github.io/brick/docs.html#x-tag-deck" alt="x-deck documentation">x-deck</a> give us multiple views with transitions.</p>
+
+<p>First, we start with a barebones HTML document and then include Brick's CSS and JS along with our own application-specific code (app.css and app.js respectively in the example to follow).</p>
+
+<pre lang="html5">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/brick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <title>Simple - Brick Demo</title> 
+  </head> 
+  <body> 
+    <!--- Some Brick components will go here -->
+    <script type="text/javascript" src="js/brick.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
+  </html>
+</pre>
+
+<p>Your directory structure should look like this:</p>
+
+<img src="#">
+
+<p>Now we add add some brick tags:</p>
+
+<pre lang="html5">
+<x-appbar id="bar">
+  <header>Simple Brick App</header>
+  <button id="view-prev">Previous View</button>
+  <button id="view-next">Next View</button>
+</x-appbar>
+</pre>
+
+<p>Below your x-appbar, create an x-deck with some x-cards as children. You can give the x-cards any content you like.</p>
+
+<pre lang="html5">
+<!-- Place your x-deck directly after your x-appbar -->
+<x-deck id="views">
+  <x-card>
+    <h1>View 1</h1>
+    <p>Hello, world!</p>
+  </x-card>
+  <x-card>
+    <h1>Pick a Date</h1>
+    <p>&lt;x-datepicker&gt;'s are a polyfill for &lt;input type="date"&gt;</p>
+    <x-datepicker></x-datepicker>
+    <p>Just here to show you another tag in action!</p>
+  </x-card>
+  <x-card>
+    <h1>A Random Cat To Spice Things Up</h1>
+    <!-- Fetches from the Lorem Pixel placeholder content service -->
+    <img src="http://lorempixel.com/300/300/cats">
+  </x-card>
+</x-deck>
+</pre>
+
+<p>We have already almost completed the structure for a simple application. All we need now is a little bit of CSS and Javascript to tie it together.</p>
+
+<pre lang="javascript">
+document.addEventListener('DOMComponentsLoaded', function() { 
+  // Run any code here that depends on Brick components being loaded first 
+  // Very similar to jQuery's document.ready() 
+
+  // Grab the x-deck and the two buttons found in our x-appbar and assign to local vars
+  var deck = document.getElementById("views"),
+    nextButton = document.getElementById("view-next"),
+    prevButton = document.getElementById("view-prev"); 
+
+  // Add event listeners so that when we click the buttons, our views transition between one another
+  prevButton.addEventListener("click", function(){ deck.shufflePrev(); }); 
+  nextButton.addEventListener("click", function(){ deck.shuffleNext(); });
+});
+</pre>
+
+<p>Some simple CSS to style our elements:</p>
+
+<pre lang="css">
+html, body{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-size: 100%;
+}
+
+x-appbar {
+  /* I like the x-appbar with a little extra padding than the default structural styles */
+  padding: .2em 0;
+}
+
+x-deck > x-card {
+  /* Let's give the cards a light background color */
+  background: #eee;
+  padding: 1em;
+}
+</pre>
+
+<p>Modern web applications can and should be developed mobile first - that is to say, you should design from the smallest viewports that you want to cater to and move up from there. If you open your app in Firefox and toggle on Responsive Design Mode using the Developer Tools, you should see the following:</p>
+
+<img src="#">
+
+<p>Ka-bam! With a little bit of declaritive markup and a few tweaks, we have a skeleton that anyone can use to make a multi-view app within a single HTML document.</p>
+
+<p>Now let's make our own custom element or 'brick' using X-Tag.</p>
+
+<h2>Creating Bricks (Custom Elements) Using X-Tag</h2>
+
+<p>Let's say we have mobile application in which the user takes an action that results in a blocking task. Maybe the application is waiting for an external service. The user's next action depends on the data from the server, so unfortunately we have to wait. For the sake of our purposes here, let's pretend we can't modify our program too much and assume an entrenched artchitecture - maybe the person who wrote it isn't with your organization anymore. We have to do the best with what we have.</p>
+
+<p>We will create a custom modal spinner that will let the user know to wait and that the application is doing work. It's important to give your users feedback on what's happening in your app when they don't get to complete their task in a timely manner. Users value their time and so should you.</p>
+
+<h3>1. Registering Your Custom Element</h3>
+
+<p>X-Tag relies on several different events to detect and upgrade elements to custom elements. X-Tag will work whether the element was present in the original source document, added by setting the innerHTML property, or created dynamically via <code>document.createElement</code>. You should take a look at <a href="http://x-tags.org/docs#helpers">the Helpers section</a> of the X-Tag documentation as it covers various functions that will allow you to work with your custom elements just like vanilla ones.</p>
+
+<p>The first thing that we need to do is <em>register</em> our custom element with X-Tag so that X-Tag knows what to do if and when it encounters our custom element. We do that by calling <code>xtag.register</code>.</p>
+
+<pre lang="javascript">
+xtag.register('x-status-hud', {
+  // We will give our tag custom behavior here for our status indicating spinner
+});
+</pre>
+
+<p><strong>!IMPORTANT:</strong> All custom element names <em>must contain a hyphen</em>. Why is this? The idea here is that there are no standard HTML elements with a hyphen in them, so we don't trample existing namespaces and have collisions. You <strong>do not have to prefix with 'x-'</strong>, this is just a convention used for components create with X-Tag in the Brick ecosystem. Once upon a time in the early days of the W3C specification for custom elements, it was speculated that <em>all</em> custom elements would have an <code>x-</code> prefix; this restriction was relaxed in later versions of the specification. If you were to name an element 'bacon-eggs' or 'adorable-kitten', both of these would be perfectly valid names. Choose a name that describes what your element is or does.</p>
+
+<p>If we wanted to, we could choose to set what HTML element is being used as our base element before upgrading. We can also set a specific prototype for our element if we want to involve functionality from a different element. You can declare these as follows:</p>
+
+<pre lang="javascript">
+xtag.register('x-superinput', {
+  extends: 'input',
+  prototype: Object.create(HTMLDivElement.prototype)
+});
+</pre>
+
+<p>Our spinner doesn't require those to be set in any particular way. They are worth mentioning because they will be useful to you when you write more advanced components and want a specific kind of control over them.</p>
+
+<h3>2. The Element Lifecycle</h3>
+
+<p>Custom elements have events that fire at certain times during their lifetime. Events are fired when an element is created, inserted into the DOM, removed from the DOM, and when attributes are set. You can take advantage of none or all of these events.</p>
+
+<pre lang="javascript">
+lifecycle:{
+  created: function(){
+    // fired once at the time a component
+    // is initially created or parsed
+  },
+  inserted: function(){
+    // fired each time a component
+    // is inserted into the DOM
+  },
+  removed: function(){
+    // fired each time an element
+    // is removed from DOM
+  },
+  attributeChanged: function(){
+    // fired when attributes are set
+  }
+
+</pre>
+
+<p>Our element is going to use the <code>created</code> event. When it is created, the code will add some child elements. We can affect this elements with custom</p>
+
+<pre lang="javascript">
+xtag.register('x-status-hud', {
+  lifecycle: {
+    created: function(){
+        this.xtag.textEl = document.createElement('strong');
+
+        this.xtag.spinnerContainer = document.createElement('div');
+        this.xtag.spinner = document.createElement('div');
+
+        this.xtag.spinnerContainer.className = 'spinner';
+
+        this.xtag.spinnerContainer.appendChild(this.xtag.spinner);
+        this.appendChild(this.xtag.spinnerContainer);
+        this.appendChild(this.xtag.textEl);
+    }
+  }
+  // More configuration of our element will follow here
+});
+</pre>
+
+
+
+<h3>3. Adding Custom Methods</h3>
+
+<p>We need to have control over when we show or hide our status HUD. To do that, we need to add some methods to our component. Let's add some functions to do that. A simple <code>toggle()</code> may suffice for some use cases, but let's throw in individual <code>hide()</code> and <code>show()</code> functions too.</p>
+
+<pre lang="javascript">
+
+
+xtag.register('x-status-hud', {
+  lifecycle: {
+    created: function(){
+      this.xtag.textEl = document.createElement('b');
+      this.xtag.img = document.createElement('img');
+      this.xtag.img.src = emptyGif;
+      this.appendChild(this.xtag.img);
+      this.appendChild(this.xtag.textEl);
+      updateSize(this);
+    },
+
+    inserted: function() {
+      updateSize(this);
+
+    }
+  },
+  methods: {
+    toggle: function(){
+      this.visible = this.visible ? false : true;
+    },
+
+    show: function (){
+      this.visible = true;
+    },
+
+    hide: function (){
+      this.visible = false;
+    }
+  }
+</pre>
+
+<h3>4. Adding Custom Accessors</h3>
+<pre lang="javascript">
+xtag.register('x-status-hud', {
+  lifecycle: {
+    created: function(){
+      this.xtag.textEl = document.createElement('b');
+      this.xtag.img = document.createElement('img');
+      this.xtag.img.src = emptyGif;
+      this.appendChild(this.xtag.img);
+      this.appendChild(this.xtag.textEl);
+      updateSize(this);
+    },
+
+    inserted: function() {
+      updateSize(this);
+
+    }
+  },
+
+  methods: {
+    toggle: function(){
+      this.visible = this.visible ? false : true;
+    },
+
+    show: function (){
+      this.visible = true;
+    },
+
+    hide: function (){
+      this.visible = false;
+    }
+  },
+
+  accessors: {
+    visible: {
+      attribute: { boolean: true }
+    },
+
+    label: {
+      attribute: {},
+
+      set: function(text) {
+        this.xtag.textEl.innerHTML = text;
+      }
+    }
+  }
+});
+</pre>
+
+<p>We have two accessors now. We've told X-Tag that we want to be able to access and set the visibility and label of the status HUD.</p>
+
+<p>Explain here why <code>attribute: {}</code>
+
+<h3>The Finished Component</h3>
+
+<p>Inside of our <code>index.html</code> file after the inclusion of our external scripts, let's plug in a few lines to demonstrate that all this code does what we want it to.</p>
+
+<p>When we write code that depends on custom elements having been loaded already, we add an event listener that fires when the components have finished loading. This wa
+<pre lang="markup">
+<script type="text/javascript">
+  document.addEventListener('DOMComponentsLoaded', function(){
+      // Any HUD customizations should be done here.
+  }, false);
+</script>
+</pre>
+
+<p>There you have it. We've created a simple modular, reusable widget for our client-side code. It's a good starting point. But is it really finished? Perhaps we can even do better.</p>
+
+<p>Some ways we may improve this element:</p>
+<ul>
+  <li>Have the element recalculate it's size when the <code>attributeChanged</code> event is fired (in addition to it's size calculation upon insertion) and have the component resize to fit the label as it is updated rather than truncated with an ellipsis</li>
+  <li>Let the developer set an image instead of a CSS spinner to customize the user experience further</li>
+</ul>
+
+<p>Use your creativity to come up with a small set of practical features and improvements beyond these as an exercise on your own.</p>
+
+<p>After following this tutorial you should understand how to extend the DOM with your own custom elements. If you're stuck, leave a comment and we'll do our best to get you back on track. If you're not stuck, post your Github repo and show us what cool components you've made with Brick and X-Tag. Happy hacking!</p>

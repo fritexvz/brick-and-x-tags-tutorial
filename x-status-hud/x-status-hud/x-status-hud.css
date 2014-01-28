@@ -1,0 +1,72 @@
+x-status-hud, x-status-hud b, x-status-hud img {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+x-status-hud {
+  display: block;
+  width: 2em;
+  height: 2em;
+  line-height: 100%;
+  font-family: sans-serif;
+  color: #000;
+  overflow: hidden;
+  padding: 8%;
+  margin: 0 auto;
+  /* Feel free to override this stuff to get the look and feel you want */
+  -webkit-border-radius: .15em;
+  border-radius: .15em;
+  border-color: #000;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 4px 0px #000;
+  box-shadow: 0px 0px 4px 0px #000; 
+}
+
+x-status-hud b {
+  display: inline-block;
+  font-size: .2em;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  bottom: 0;
+  white-space: nowrap;
+  width: 100%;
+  word-wrap: break-word;
+  z-index: 1;
+}
+
+/* Spinner Animation */
+
+x-status-hud img {
+  display: block;
+  margin: 0 auto;
+  border-color: #000;
+  -webkit-animation: 1s spin infinite linear;
+  -moz-animation: 1s spin infinite linear;
+  -ms-animation: 1s spin infinite linear;
+  animation: 1s spin infinite linear;
+  height: auto;
+  width: 50%;
+}
+
+x-status-hud[visible] {
+  z-index: 999;
+  visibility: visible;
+}
+
+x-status-hud:not([visible]) {
+  visibility: hidden;
+}
+
+x-status-hud:not([src]) img {
+  border-radius: 100%;
+  border: solid transparent;
+  border-top-color: inherit;
+}
+
+@-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }
+@-moz-keyframes spin { to { -moz-transform: rotate(360deg); } }
+@-ms-keyframes spin { to { -ms-transform: rotate(360deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }
