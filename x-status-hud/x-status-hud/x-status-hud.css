@@ -1,54 +1,41 @@
-x-status-hud, x-status-hud b, x-status-hud img {
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+x-status-hud, x-status-hud strong, x-status-hud div {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 x-status-hud {
   display: block;
-  width: 2em;
-  height: 2em;
+  min-width: 50%;
+  max-width: 60%;
+  min-height: 5em;
+  max-height: 30%;
   line-height: 100%;
   font-family: sans-serif;
   color: #000;
   overflow: hidden;
   padding: 8%;
   margin: 0 auto;
-  /* Feel free to override this stuff to get the look and feel you want */
-  -webkit-border-radius: .15em;
-  border-radius: .15em;
-  border-color: #000;
-  background: rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0px 0px 4px 0px #000;
-  box-shadow: 0px 0px 4px 0px #000; 
+  color: rgba(0, 0, 0, 0.8);
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.1);
+  -webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.5);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3); 
 }
 
-x-status-hud b {
+x-status-hud strong {
   display: inline-block;
-  font-size: .2em;
+  margin: 1.5em 0px 0px;
   height: 100%;
-  left: 0;
   overflow: hidden;
   text-align: center;
   text-overflow: ellipsis;
-  bottom: 0;
   white-space: nowrap;
   width: 100%;
   word-wrap: break-word;
   z-index: 1;
-}
-
-/* Spinner Animation */
-
-x-status-hud img {
-  display: block;
-  margin: 0 auto;
-  border-color: #000;
-  -webkit-animation: 1s spin infinite linear;
-  -moz-animation: 1s spin infinite linear;
-  -ms-animation: 1s spin infinite linear;
-  animation: 1s spin infinite linear;
-  height: auto;
-  width: 50%;
+  font-weight: normal;
 }
 
 x-status-hud[visible] {
@@ -60,13 +47,71 @@ x-status-hud:not([visible]) {
   visibility: hidden;
 }
 
-x-status-hud:not([src]) img {
-  border-radius: 100%;
-  border: solid transparent;
-  border-top-color: inherit;
+
+/**
+ * (C)Leanest CSS spinner ever
+ * CSS Spinner via Lea Verou (http://dabblet.com/gist/7615212)
+ */
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(1turn); }
 }
 
-@-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); } }
-@-moz-keyframes spin { to { -moz-transform: rotate(360deg); } }
-@-ms-keyframes spin { to { -ms-transform: rotate(360deg); } }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to { transform: rotate(1turn); }
+}
+
+
+
+.spinner {
+  position: relative;
+  width: 5em;
+  height: 5em;
+  margin: 0 auto;
+  font-size: 10px;
+  text-indent: 999em;
+  overflow: hidden;
+  animation: spin 1s infinite steps(8);
+  -webkit-animation: spin 1s infinite steps(8);
+}
+
+.spinner:before,
+.spinner:after,
+.spinner > div:before,
+.spinner > div:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2.25em; /* (container width - part width)/2  */
+  width: .5em;
+  height: 1.5em;
+  border-radius: .2em;
+  background: #eee;
+  box-shadow: 0 3.5em #eee; /* container height - part height */
+  -webkit-transform-origin: 50% 2.5em;
+  transform-origin: 50% 2.5em; /* container height / 2 */
+}
+
+.spinner:before {
+  background: #555;
+}
+
+.spinner:after {
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  background: #777;
+}
+
+.spinner > div:before {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  background: #999;
+}
+
+.spinner > div:after {
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+  background: #bbb;
+}
+
+
+
