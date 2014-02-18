@@ -8,6 +8,6 @@ document.addEventListener('DOMComponentsLoaded', function() {
 	  prevButton = document.getElementById("view-prev"); 
 
 	// Add event listeners so that when we click the buttons, our views transition between one another
-	prevButton.addEventListener("click", function(){ deck.shufflePrev(); }); 
-	nextButton.addEventListener("click", function(){ deck.shuffleNext(); });
+	prevButton.addEventListener("click", function(){ deck.previousCard(); }); 
+	nextButton.addEventListener("click", function(){ deck.nextCard(); });
 });
