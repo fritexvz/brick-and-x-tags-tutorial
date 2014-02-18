@@ -1,7 +1,6 @@
 /* x-status-hud */
 
 (function(){
-
   xtag.register('x-status-hud', {
     lifecycle: {
       created: function(){
