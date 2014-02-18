@@ -10,7 +10,6 @@ h1 {
 }
 
 x-deck > x-card {
-	/* Let's give the cards a light background color */
 	background: #eee;
-    padding: 0.6em
+  padding: 0.6em
 }
